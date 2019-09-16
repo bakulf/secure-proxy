@@ -12,8 +12,8 @@ const ContentScript = {
   bannerShowing: false,
 
   syncInit() {
-    this.syncCreatePort();
-    this.syncOverwriteProperties();
+ //   this.syncCreatePort();
+ //   this.syncOverwriteProperties();
   },
 
   async originIsExemptable(hostname) {
