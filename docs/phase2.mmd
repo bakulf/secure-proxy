@@ -1,0 +1,43 @@
+sequenceDiagram
+participant UA as Browser Addon
+participant CF as Cloudflare
+participant FPN as Fx Priv Network Server
+participant SP as Subscription platform
+participant IN as Internet
+
+Note over UA, IN: Heartbeat
+activate UA
+UA->>FPN: Heartbeat request
+activate FPN
+FPN-->>FPN: Validation of the current session
+FPN->>UA: Headerbeat response
+deactivate FPN
+deactivate UA
+
+Note over UA, IN: Browsing
+activate UA
+UA->>CF: Request sent to the proxy
+activate CF
+CF->>FPN: Validation of the JWT (any X minutes)
+activate FPN
+FPN->>CF: Response
+deactivate FPN
+CF->>IN: Request sent to the Internet
+activate IN
+IN->>CF: Response received from the Internet
+deactivate IN
+CF->>UA: Response sent back to the browser
+deactivate CF
+deactivate UA
+
+Note over UA, IN: Increasing the time credit
+activate SP
+SP->>FPN: New credit for the user
+activate FPN
+deactivate SP
+activate UA
+UA->>FPN: Heartbeat request
+FPN-->>FPN: Validation of the current session
+FPN->>UA: Headerbeat response (new credit)
+deactivate FPN
+deactivate UA
